@@ -5,3 +5,5 @@ pydantic==2.10.6
 gunicorn
 numpy
 tensorflow
+requests
+
