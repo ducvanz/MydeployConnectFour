@@ -1,5 +1,5 @@
-import subprocess
 import json
+import requests
 from typing import List, Optional
 
 class Connect4Solver:
@@ -19,7 +19,7 @@ class Connect4Solver:
 
     def get_optimal_move(self) -> Optional[int]:
         """
-        Lấy nước đi tối ưu bằng curl
+        Lấy nước đi tối ưu bằng HTTP request
         Trả về None nếu có lỗi
         """
         if not self.history:
@@ -29,40 +29,34 @@ class Connect4Solver:
             # 1. Chuyển đổi lịch sử nước đi
             pos = ''.join(str(col + 1) for col in self.history)
             
-            # 2. Gọi curl với timeout
-            cmd = ['curl', '-s', f'https://connect4.gamesolver.org/solve?pos={pos}']
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
+            # 2. Gửi HTTP request đến API solver
+            response = requests.get(
+                f'https://connect4.gamesolver.org/solve?pos={pos}',
                 timeout=5
             )
-            
-            # 3. Xử lý kết quả
-            if result.returncode == 0:
-                data = json.loads(result.stdout)
+
+            if response.status_code == 200:
+                data = response.json()
                 scores = data.get("score", [])
                 print(scores)
-                
+
                 if scores and len(scores) == 7:
                     # Tìm cột có điểm cao nhất và còn trống
                     valid_scores = [
-                        (score, col) for col, score in enumerate(scores) 
+                        (score, col) for col, score in enumerate(scores)
                         if self.history.count(col) < 6
                     ]
                     if valid_scores:
                         center = 3
-                        # best_col = max(valid_scores)[1]
                         best_col = max(
                             valid_scores,
                             key=lambda x: (x[0], x[1] % 2, -abs(x[1] - center))
-                            # Ưu tiên: điểm cao → cột lẻ (1) → gần trung tâm
                         )[1]
                         return best_col
-            
+
             return self.__fallback_move()
-            
-        except (subprocess.TimeoutExpired, json.JSONDecodeError) as e:
+        
+        except (requests.Timeout, requests.RequestException, json.JSONDecodeError) as e:
             print(f"Lỗi khi gọi API: {type(e).__name__}")
             return self.__fallback_move()
         except Exception as e:
