@@ -22,6 +22,7 @@ class Connect4Solver:
         Lấy nước đi tối ưu bằng HTTP request
         Trả về None nếu có lỗi
         """
+        print("call fun")
         if not self.history:
             print("1")
             return 3  # Ưu tiên cột giữa nếu bàn cờ trống
