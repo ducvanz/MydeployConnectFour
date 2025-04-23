@@ -22,7 +22,6 @@ class Connect4Solver:
         Lấy nước đi tối ưu bằng HTTP request
         Trả về None nếu có lỗi
         """
-        print("call fun")
         if not self.history:
             print("1")
             return 3  # Ưu tiên cột giữa nếu bàn cờ trống
@@ -38,6 +37,7 @@ class Connect4Solver:
             )
 
             if response.status_code == 200:
+                print("hi")
                 data = response.json()
                 scores = data.get("score", [])
                 print(scores)
