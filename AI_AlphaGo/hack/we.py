@@ -23,6 +23,7 @@ class Connect4Solver:
         Trả về None nếu có lỗi
         """
         if not self.history:
+            print("1")
             return 3  # Ưu tiên cột giữa nếu bàn cờ trống
         
         try:
