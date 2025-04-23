@@ -118,8 +118,10 @@ async def make_move(game_state: GameState) -> AIResponse:
         col = find_new_move_column(np.array(gm.board), board)
         selected_move = 3
         if col == None:
+            print("new game")
             selected_move = connect4.get_optimal_move()
         else:
+            print("diff")
             connect4.make_move(col)
             gm.drop_piece(col)
             selected_move = connect4.get_optimal_move()
