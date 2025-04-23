@@ -36,7 +36,6 @@ class Connect4Solver:
                 timeout=5
             )
 
-             response.raise_for_status()
             if response.status_code == 200:
                 print("hi")
                 data = response.json()
