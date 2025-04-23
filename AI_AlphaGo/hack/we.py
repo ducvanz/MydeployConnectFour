@@ -46,6 +46,7 @@ class Connect4Solver:
                         (score, col) for col, score in enumerate(scores)
                         if self.history.count(col) < 6
                     ]
+                    print(valid_scores)
                     if valid_scores:
                         center = 3
                         best_col = max(
