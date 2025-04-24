@@ -30,7 +30,6 @@ class Connect4Solver:
             }
 
             response = requests.get(url, headers=headers, timeout=5)
-            print("url", url)
 
             if response.status_code == 200:
                 data = response.json()
