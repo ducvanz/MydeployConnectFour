@@ -94,40 +94,23 @@ async def make_move(game_state: GameState) -> AIResponse:
     try:
         if not game_state.valid_moves:
             raise ValueError("Không có nước đi hợp lệ")
-        # print(game_state.board)
-        # game = ConnectFourBoard()
-        # game.board = np.array(solution(game_state))
-        # myAI = MinimaxAI()
-        # use_deep = False
-        # if game_state.current_player == 2:
-        #     if use_deep:
-        #         myAI.set_color(-1)
-        #         game.turn = 1
-        #     else:
-        #         # game.board = reversed(game.board.copy())
-        #         myAI.set_color(-1)
-        #         game.turn = -1
-        # else:
-        #     myAI.set_color(1)
-        #     game.turn = 1
-        # selected_move = myAI.get_move(game)[0]
-        ## ///////////////
-        board = np.array(solution(game_state))
-        reset_game(board)
-        global gm
-        col = find_new_move_column(np.array(gm.board), board)
-        selected_move = 3
-        if col == None:
-            print("new game")
-            selected_move = connect4.get_optimal_move()
+        print(game_state.board)
+        game = ConnectFourBoard()
+        game.board = np.array(solution(game_state))
+        myAI = MinimaxAI()
+        use_deep = False
+        if game_state.current_player == 2:
+            if use_deep:
+                myAI.set_color(-1)
+                game.turn = 1
+            else:
+                # game.board = reversed(game.board.copy())
+                myAI.set_color(-1)
+                game.turn = -1
         else:
-            print("diff")
-            connect4.make_move(col)
-            gm.drop_piece(col)
-            selected_move = connect4.get_optimal_move()
-        connect4.make_move(selected_move)
-        gm.drop_piece(selected_move)
-        print(selected_move)
+            myAI.set_color(1)
+            game.turn = 1
+        selected_move = myAI.get_move(game)[0]
         print(time.time() - st)
         return AIResponse(move=selected_move)
     except Exception as e:
