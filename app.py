@@ -97,7 +97,7 @@ async def make_move(game_state: GameState) -> AIResponse:
         print(game_state.board)
         game = ConnectFourBoard()
         game.board = np.array(solution(game_state))
-        myAI = MinimaxAI(depth = 6)
+        myAI = MinimaxAI(depth = 5)
         use_deep = False
         if game_state.current_player == 2:
             if use_deep:
