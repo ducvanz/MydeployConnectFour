@@ -1,5 +1,5 @@
 ### Tên file gốc:   AIconnect4.py
-
+import random
 import numpy as np
 import pickle
 from copy import deepcopy
@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from Constant import RED, YELLOW, IDLE
+from Constant import RED, YELLOW, IDLE, BLOCK
 
 
 class ConnectFourBoard:
@@ -62,6 +62,11 @@ class ConnectFourBoard:
             self.rows, self.columns = initilize_state.shape
         else :
             self.board = np.zeros(shape=(self.rows, self.columns)) 
+            number_row = random.sample(range(0, 6), 2)
+            number_col = random.sample(range(0, 7), 2)
+
+            self.board[number_row[0], number_col[0]] = BLOCK
+            self.board[number_row[1], number_col[1]] = BLOCK
 
         return self.board
 
@@ -113,8 +118,13 @@ class ConnectFourBoard:
             bool: True if the piece was successfully dropped, False otherwise
         """
         
-        row = self.rows - np.count_nonzero(self.board[:, column]) - 1
-        if (row < 0) :
+        row = 0
+        for row in reversed(range(0, 6, 1)):
+            if self.board[row, column] == 0:
+                break
+        else:
+            return False
+        if (row < 0) or self.board[row, column] == BLOCK:
             return False
         else :
             if move_valuated is None :
